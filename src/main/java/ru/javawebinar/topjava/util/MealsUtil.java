@@ -38,12 +38,8 @@ public class MealsUtil {
         List<MealTo> mealsTo = filteredByStreams(meals, startTime, endTime, 2000);
         mealsTo.forEach(System.out::println);
 
-        System.out.println(filteredByCycles(meals, startTime, endTime, 2000));
 
         // Optional2 recursion
-        System.out.println(filteredByRecursion(meals, startTime, endTime, 2000));
-        System.out.println(filteredBySetterRecursion(meals, startTime, endTime, 2000));
-        System.out.println(filteredByRecursionWithCycleAndRunnable(meals, startTime, endTime, 2000));
 
         //  Optional2 reference type
         //        System.out.println(filteredByAtomic(meals, startTime, endTime, 2000));  // or boolean[1]
@@ -51,15 +47,7 @@ public class MealsUtil {
 
         //   Optional2 delayed execution
         //      System.out.println(filteredByClosure(meals, startTime, endTime, 2000));
-        System.out.println(filteredByExecutor(meals, startTime, endTime, 2000));
-        System.out.println(filteredByLock(meals, startTime, endTime, 2000));
-        System.out.println(filteredByCountDownLatch(meals, startTime, endTime, 2000));
-        System.out.println(filteredByPredicate(meals, startTime, endTime, 2000));
-        System.out.println(filteredByConsumerChain(meals, startTime, endTime, 2000));
 
-        //   Optional2 streams
-        System.out.println(filteredByFlatMap(meals, startTime, endTime, 2000));
-        System.out.println(filteredByCollector(meals, startTime, endTime, 2000));
     }
 
     public static List<MealTo> filteredByStreams(List<Meal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
