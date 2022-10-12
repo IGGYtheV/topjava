@@ -10,6 +10,6 @@ public class TimeUtil {
     }
 
     public static String localTimeToStringConverterWithFormat(LocalDateTime localDateTime) {
-       return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(localDateTime);
+        return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(localDateTime);
     }
 }

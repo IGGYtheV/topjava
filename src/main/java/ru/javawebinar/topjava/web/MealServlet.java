@@ -1,7 +1,8 @@
 package ru.javawebinar.topjava.web;
 
 import org.slf4j.Logger;
-import ru.javawebinar.topjava.model.Model;
+import ru.javawebinar.topjava.util.RamStorageMealInitializer;
+import ru.javawebinar.topjava.storage.RamStorageMeal;
 import ru.javawebinar.topjava.storage.Storage;
 
 import javax.servlet.ServletException;
@@ -14,7 +15,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class MealServlet extends HttpServlet {
     private static final Logger log = getLogger(MealServlet.class);
-    private Storage storage = Model.getInstance().getStorage();
+    private Storage storage = new RamStorageMeal(RamStorageMealInitializer.createMealsTo());
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

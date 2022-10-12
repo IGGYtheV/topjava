@@ -2,10 +2,8 @@ package ru.javawebinar.topjava.storage;
 
 import ru.javawebinar.topjava.model.MealTo;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
 public class RamStorageMeal implements Storage {
@@ -22,7 +20,7 @@ public class RamStorageMeal implements Storage {
     }
 
     @Override
-    public void save(MealTo mealTo) {
+    public void create(MealTo mealTo) {
 
     }
 

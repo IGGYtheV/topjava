@@ -8,13 +8,11 @@ public interface Storage {
 
     void update(MealTo mealTo);
 
-    void save(MealTo mealTo);
+    void create(MealTo mealTo);
 
-    MealTo get(Integer uuid);
+    MealTo get(Integer id);
 
     void delete(Integer id);
 
     List<MealTo> getAll();
-
-
 }
