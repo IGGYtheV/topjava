@@ -1,28 +1,23 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+
+
+
 <html lang="ru">
+
 <head>
     <meta charset="utf-8">
     <title>Meals</title>
+
 </head>
 
 <body>
 <h3><a href="index.html">Home</a></h3>
+
 <ul>
     <li><a href="meals">Add Meal</a></li>
 </ul>
-
-<style>
-    .green {
-        color: green;
-    }
-
-    .red {
-        color: red;
-    }
-</style>
-
 <table border="1" cellpadding="8" cellspacing="0" style="margin: auto">
     <caption>Meals</caption>
     <tr>
@@ -35,10 +30,11 @@
     </tr>
 
     <c:forEach items="${mealsTo}" var="mealTo">
+        <jsp:useBean id="timeUtil" class="ru.javawebinar.topjava.util.TimeUtil"/>
         <jsp:useBean id="mealTo" type="ru.javawebinar.topjava.model.MealTo"/>
         <tr>
             <td class="${mealTo.excess ? 'red':'green'}">
-                    ${mealTo.getDateTime()}
+                    ${timeUtil.localTimeToStringConverterWithFormat(mealTo.getDateTime())}
             </td>
 
             <td class="${mealTo.excess ? 'red':'green'}">
@@ -59,5 +55,16 @@
         </tr>
     </c:forEach>
 </table>
+
+
+<style>
+    .green {
+        color: green;
+    }
+
+    .red {
+        color: red;
+    }
+</style>
 </body>
 </html>
