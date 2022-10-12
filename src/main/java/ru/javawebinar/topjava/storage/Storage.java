@@ -5,7 +5,6 @@ import ru.javawebinar.topjava.model.MealTo;
 import java.util.List;
 
 public interface Storage {
-    void clear();
 
     void update(MealTo mealTo);
 
@@ -16,4 +15,6 @@ public interface Storage {
     void delete(Integer id);
 
     List<MealTo> getAll();
+
+
 }

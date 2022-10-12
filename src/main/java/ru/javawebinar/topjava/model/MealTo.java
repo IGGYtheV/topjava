@@ -2,13 +2,13 @@ package ru.javawebinar.topjava.model;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.Objects;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
+
 
 public class MealTo {
-    private final int id;
-    private static final AtomicInteger count = new AtomicInteger(0);
+    private final Integer id;
+//    private static final AtomicInteger count = new AtomicInteger(0);
     private final LocalDateTime dateTime;
 
     private final String description;
@@ -22,17 +22,16 @@ public class MealTo {
 //    private final Supplier<Boolean> excess;  // filteredByClosure
     private boolean excess;
 
-    public MealTo(LocalDateTime dateTime, String description, int calories, boolean excess) {
-        this.id = count.incrementAndGet();
+    public MealTo(Integer id, LocalDateTime dateTime, String description, int calories, boolean excess) {
+        this.id = id;
         this.dateTime = dateTime;
         this.description = description;
         this.calories = calories;
         this.excess = excess;
     }
 
-    public String getDateTime() {
-        return
-                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(dateTime);
+    public LocalDateTime getDateTime() {
+        return dateTime;
     }
 
     public String getDescription() {

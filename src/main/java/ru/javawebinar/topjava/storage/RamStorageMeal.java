@@ -2,23 +2,18 @@ package ru.javawebinar.topjava.storage;
 
 import ru.javawebinar.topjava.model.MealTo;
 
-import java.util.ArrayList;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
-public class ListStorage implements Storage {
+public class RamStorageMeal implements Storage {
 
     List<MealTo> list = new CopyOnWriteArrayList<>();
 
-    public ListStorage(List<MealTo> list) {
+    public RamStorageMeal(List<MealTo> list) {
         this.list = list;
-    }
-
-    @Override
-    public void clear() {
-        list.clear();
     }
 
     @Override
