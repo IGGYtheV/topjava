@@ -6,10 +6,7 @@ import ru.javawebinar.topjava.model.MealTo;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -21,7 +18,8 @@ public class RamStorageMealInitializer {
     private static final AtomicInteger count = new AtomicInteger(0);
 
     public static Map<Integer, Meal> createMeal() {
-        Map<Integer, Meal> map = new LinkedHashMap<>();
+//        Map<K,V> map = Collections.synchronizedMap(new LinkedHashMap<>());
+        Map<Integer, Meal> map = Collections.synchronizedMap( new LinkedHashMap<>());
         map.put(count.incrementAndGet(), new Meal(count.intValue(),
                 LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0),
                 "Завтрак", 500)

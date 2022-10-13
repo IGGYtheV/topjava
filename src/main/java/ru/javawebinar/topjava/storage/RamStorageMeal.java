@@ -15,22 +15,22 @@ public class RamStorageMeal implements Storage {
 
 
     @Override
-    public void update(Meal mealTo) {
-
-    }
-
-    @Override
     public void create(Meal mealTo) {
 
     }
 
     @Override
-    public MealTo get(Integer id) {
+    public void update(Meal mealTo) {
+
+    }
+
+    @Override
+    public MealTo get(int id) {
         return null;
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(int id) {
         linkedMap.remove(id);
     }
 

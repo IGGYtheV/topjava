@@ -11,9 +11,9 @@ public interface Storage {
 
     void create(Meal mealTo);
 
-    MealTo get(Integer id);
+    MealTo get(int id);
 
-    void delete(Integer id);
+    void delete(int id);
 
     List<MealTo> getAll();
 }
