@@ -1,26 +1,26 @@
 package ru.javawebinar.topjava.storage;
 
+import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.MealTo;
+import ru.javawebinar.topjava.util.RamStorageMealInitializer;
 
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.stream.IntStream;
+import java.util.*;
 
 public class RamStorageMeal implements Storage {
+    Map<Integer, Meal> linkedMap;
 
-    List<MealTo> list = new CopyOnWriteArrayList<>();
+    public RamStorageMeal(Map<Integer, Meal> linkedMap) {
+        this.linkedMap = linkedMap;
+    }
 
-    public RamStorageMeal(List<MealTo> list) {
-        this.list = list;
+
+    @Override
+    public void update(Meal mealTo) {
+
     }
 
     @Override
-    public void update(MealTo mealTo) {
-
-    }
-
-    @Override
-    public void create(MealTo mealTo) {
+    public void create(Meal mealTo) {
 
     }
 
@@ -31,18 +31,11 @@ public class RamStorageMeal implements Storage {
 
     @Override
     public void delete(Integer id) {
-        list.remove(getIndex(id));
+        linkedMap.remove(id);
     }
 
     @Override
     public List<MealTo> getAll() {
-        return list;
-    }
-
-    private int getIndex(int searchID) {
-        return IntStream.range(0, list.size())
-                .filter(i -> list.get(i).getId() == searchID)
-                .findFirst()
-                .orElse(-1);
+        return RamStorageMealInitializer.createMealsTo(new ArrayList<>(linkedMap.values()));
     }
 }

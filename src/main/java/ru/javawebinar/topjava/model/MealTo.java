@@ -13,8 +13,8 @@ public class MealTo {
     private boolean excess;
 
     public MealTo(Integer id, LocalDateTime dateTime, String description, int calories, boolean excess) {
-        this.id = id;
         this.dateTime = dateTime;
+        this.id = id;
         this.description = description;
         this.calories = calories;
         this.excess = excess;
@@ -36,12 +36,12 @@ public class MealTo {
         return excess;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
     public void setExcess(boolean excess) {
         this.excess = excess;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     @Override
@@ -49,8 +49,7 @@ public class MealTo {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MealTo mealTo = (MealTo) o;
-        return id == mealTo.id && calories == mealTo.calories && excess == mealTo.excess
-                && dateTime.equals(mealTo.dateTime) && description.equals(mealTo.description);
+        return calories == mealTo.calories && excess == mealTo.excess && Objects.equals(id, mealTo.id) && dateTime.equals(mealTo.dateTime) && Objects.equals(description, mealTo.description);
     }
 
     @Override
