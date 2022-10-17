@@ -37,10 +37,6 @@ public class User extends AbstractNamedEntity {
         return email;
     }
 
-    public String getName() {
-        return super.getName();
-    }
-
     public void setEmail(String email) {
         this.email = email;
     }
