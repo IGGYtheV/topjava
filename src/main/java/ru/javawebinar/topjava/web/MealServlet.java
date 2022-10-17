@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Collection;
 import java.util.Objects;
 
 public class MealServlet extends HttpServlet {
@@ -37,8 +38,14 @@ public class MealServlet extends HttpServlet {
                 Integer.parseInt(request.getParameter("calories")));
 
         log.info(meal.isNew() ? "Create {}" : "Update {}", meal);
-        repository.save(meal);
-        response.sendRedirect("meals");
+
+        if (repository.save(meal, SecurityUtil.authUserId()) != null) {
+            response.sendRedirect("meals");
+        } else {
+            log.debug(meal.isNew() ? "Create {}" : "Update {}", meal);
+            log.debug("Authenticated user id: " + SecurityUtil.authUserId());
+            response.sendRedirect("error.html");
+        }
     }
 
     @Override
@@ -49,22 +56,36 @@ public class MealServlet extends HttpServlet {
             case "delete":
                 int id = getId(request);
                 log.info("Delete id={}", id);
-                repository.delete(id);
-                response.sendRedirect("meals");
+                if (repository.delete(id, SecurityUtil.authUserId())) {
+                    response.sendRedirect("meals");
+                } else {
+                    log.debug("Delete: meal " + id + " doesn't belong to user " + SecurityUtil.authUserId());
+                    response.sendRedirect("error.html");
+                }
                 break;
             case "create":
             case "update":
                 final Meal meal = "create".equals(action) ?
                         new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000) :
-                        repository.get(getId(request));
-                request.setAttribute("meal", meal);
-                request.getRequestDispatcher("/mealForm.jsp").forward(request, response);
+                        repository.get(getId(request), SecurityUtil.authUserId());
+                if (meal == null) {
+                    log.debug("Update: meal " + meal + "\n doesn't belong to authenticated user with id " + SecurityUtil.authUserId());
+                    response.sendRedirect("error.html");
+                } else {
+                    request.setAttribute("meal", meal);
+                    request.getRequestDispatcher("/mealForm.jsp").forward(request, response);
+                }
+
                 break;
             case "all":
             default:
                 log.info("getAll");
+                Collection<Meal> all = repository.getAll(SecurityUtil.authUserId());
+                if (all.isEmpty()) {
+                    log.debug("getAll: " + "Empty collection returned for authenticated user with id " + SecurityUtil.authUserId());
+                }
                 request.setAttribute("meals",
-                        MealsUtil.getTos(repository.getAll(), MealsUtil.DEFAULT_CALORIES_PER_DAY));
+                        MealsUtil.getTos(all, MealsUtil.DEFAULT_CALORIES_PER_DAY));
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
         }
