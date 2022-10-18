@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 public class MealServlet extends HttpServlet {
@@ -80,7 +80,7 @@ public class MealServlet extends HttpServlet {
             case "all":
             default:
                 log.info("getAll");
-                Collection<Meal> all = repository.getAll(SecurityUtil.authUserId());
+                List<Meal> all = repository.getAll(SecurityUtil.authUserId());
                 if (all.isEmpty()) {
                     log.debug("getAll: " + "Empty collection returned for authenticated user with id " + SecurityUtil.authUserId());
                 }
