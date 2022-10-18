@@ -72,7 +72,8 @@ public class InMemoryMealRepository implements MealRepository {
     public List<Meal> getAll(int userId) {
         log.info("getAll");
         if (repository.containsKey(userId)) {
-            return repository.get(userId).values().stream()
+            Collection<Meal> list =  repository.get(userId).values();
+            return list.stream()
                     .sorted(Comparator.comparing(Meal::getDate).thenComparing(Meal::getTime).reversed())
                     .collect(Collectors.toList());
         } else {

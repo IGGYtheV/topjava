@@ -26,7 +26,7 @@ public class MealRestController {
     }
 
     public List<MealTo> getAll() {
-        List<Meal> all = service.getAll(SecurityUtil.authUserId());
+        List<Meal> all = service.getAll(authUserId());
         log.info("getAll");
         return MealsUtil.getTos(all, MealsUtil.DEFAULT_CALORIES_PER_DAY);
     }
@@ -38,7 +38,7 @@ public class MealRestController {
 
     public Meal create(Meal meal) {
         log.info("create {}", meal);
-        checkNew(meal);
+//        checkNew(meal);
         return service.create(meal, authUserId());
     }
 

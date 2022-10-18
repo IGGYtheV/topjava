@@ -12,17 +12,12 @@ import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
 public class MealService {
     private final MealRepository repository;
 
-//    {
-//        for (Meal meal : MealsUtil.meals) {
-//            create(meal, SecurityUtil.authUserId());
-//        }
-//    }
-
     public MealService(MealRepository repository) {
         this.repository = repository;
     }
 
     public Meal create(Meal meal, int userId) {
+//        return checkNotFoundWithId(repository.save(meal, userId), userId);
         return repository.save(meal, userId);
     }
 
