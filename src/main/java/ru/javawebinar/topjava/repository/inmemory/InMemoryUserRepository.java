@@ -18,7 +18,6 @@ public class InMemoryUserRepository implements UserRepository {
     private final Map<Integer, User> repository = new ConcurrentHashMap<>();
     private final AtomicInteger counter = new AtomicInteger(0);
 
-
     @Override
     public User save(User user) {
         log.info("save {}", user);
@@ -28,21 +27,18 @@ public class InMemoryUserRepository implements UserRepository {
             repository.put(user.getId(), user);
             return user;
         }
-        // handle case: update, but not present in storage
         return repository.computeIfPresent(user.getId(), (id, oldMeal) -> user);
     }
 
     @Override
     public boolean delete(int id) {
         log.info("delete {}", id);
-
         return repository.remove(id) != null;
     }
 
     @Override
     public User get(int id) {
         log.info("get {}", id);
-
         return repository.get(id);
     }
 
@@ -58,7 +54,7 @@ public class InMemoryUserRepository implements UserRepository {
     public User getByEmail(String email) {
         log.info("getByEmail {}", email);
         return repository.values().stream()
-                .filter(user -> user.getEmail().equals(email))
+                .filter(user -> user.getEmail().equalsIgnoreCase(email))
                 .findFirst()
                 .orElse(null);
     }

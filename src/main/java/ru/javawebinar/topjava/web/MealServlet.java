@@ -6,6 +6,7 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.repository.inmemory.InMemoryMealRepository;
 import ru.javawebinar.topjava.util.MealsUtil;
+import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -19,7 +20,6 @@ import java.util.Objects;
 
 public class MealServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(MealServlet.class);
-
     private MealRepository repository;
 
     @Override
@@ -44,7 +44,8 @@ public class MealServlet extends HttpServlet {
         } else {
             log.debug(meal.isNew() ? "Create {}" : "Update {}", meal);
             log.debug("Authenticated user id: " + SecurityUtil.authUserId());
-            response.sendRedirect("error.html");
+            throw new NotFoundException(
+                    "User with id" + SecurityUtil.authUserId() + " or Meal with id" + id + " were not Found");
         }
     }
 
@@ -60,17 +61,19 @@ public class MealServlet extends HttpServlet {
                     response.sendRedirect("meals");
                 } else {
                     log.debug("Delete: meal " + id + " doesn't belong to user " + SecurityUtil.authUserId());
-                    response.sendRedirect("error.html");
+                    throw new NotFoundException(
+                            "User with id" + SecurityUtil.authUserId() + " or Meal with id" + id + " were not Found");
                 }
                 break;
             case "create":
             case "update":
+                int id1 = getId(request);
                 final Meal meal = "create".equals(action) ?
                         new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000) :
-                        repository.get(getId(request), SecurityUtil.authUserId());
+                        repository.get(id1, SecurityUtil.authUserId());
                 if (meal == null) {
-                    log.debug("Update: meal " + meal + "\n doesn't belong to authenticated user with id " + SecurityUtil.authUserId());
-                    response.sendRedirect("error.html");
+                    throw new NotFoundException(
+                            "User with id" + SecurityUtil.authUserId() + " or Meal with id" + id1 + " were not Found");
                 } else {
                     request.setAttribute("meal", meal);
                     request.getRequestDispatcher("/mealForm.jsp").forward(request, response);

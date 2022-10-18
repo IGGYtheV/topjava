@@ -9,7 +9,6 @@ import static ru.javawebinar.topjava.web.SecurityUtil.authUserId;
 public class ProfileRestController extends AbstractUserController {
 
     public User get() {
-
         return super.get(authUserId());
     }
 

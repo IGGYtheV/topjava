@@ -13,7 +13,7 @@ import static ru.javawebinar.topjava.web.SecurityUtil.authUserId;
 
 @Controller
 public class MealRestController {
-    protected final Logger log = LoggerFactory.getLogger(MealRestController.class);
+    private final Logger log = LoggerFactory.getLogger(MealRestController.class);
 
     private final MealService service;
 
