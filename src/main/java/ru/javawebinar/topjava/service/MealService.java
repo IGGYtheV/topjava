@@ -6,12 +6,17 @@ import ru.javawebinar.topjava.repository.MealRepository;
 
 import java.util.List;
 
-import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFound;
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
 public class MealService {
     private final MealRepository repository;
+
+//    {
+//        for (Meal meal : MealsUtil.meals) {
+//            create(meal, SecurityUtil.authUserId());
+//        }
+//    }
 
     public MealService(MealRepository repository) {
         this.repository = repository;

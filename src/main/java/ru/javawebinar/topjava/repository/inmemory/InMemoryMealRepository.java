@@ -66,14 +66,6 @@ public class InMemoryMealRepository implements MealRepository {
             log.debug("Get meal with id " + id + ". There is no user with id " + userId + " in storage.");
             return null;
         }
-
-//        try {
-//            return repository.get(userId).get(id);
-//        } catch (NullPointerException e) {
-//            log.debug(e + "\n Get: meal " + id + " doesn't belong to user " + userId
-//                    + ". Authenticated user id = " + SecurityUtil.authUserId());
-//        }
-//        return null;
     }
 
     @Override
