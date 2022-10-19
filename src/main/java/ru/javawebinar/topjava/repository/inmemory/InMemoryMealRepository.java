@@ -22,21 +22,21 @@ public class InMemoryMealRepository implements MealRepository {
         for (Meal meal : MealsUtil.meals) {
             save(meal, 1);
         }
-        for (Meal meal : MealsUtil.meals) {
+        for (Meal meal : MealsUtil.meals2) {
             save(meal, 2);
         }
     }
 
     @Override
     public Meal save(Meal meal, int userId) {
-        log.info("save {}", meal);
+        log.info("save {} for user with id {}", meal, userId);
         if (repository.containsKey(userId)) {
             if (meal.isNew()) {
                 return setIdAndPutMealIntoRepository(meal, userId);
             }
             return repository.get(userId).computeIfPresent(meal.getId(), (id, oldMeal) -> meal);
         } else {
-            repository.put(userId, new HashMap<>());
+            repository.put(userId, new ConcurrentHashMap<>());
             if (meal.isNew()) {
                 return setIdAndPutMealIntoRepository(meal, userId);
             } else {
@@ -60,7 +60,7 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public List<Meal> getAll(int userId) {
-        log.info("getAll");
+        log.info("getAll for user with id {}", userId);
         return repository.get(userId) == null ? Collections.emptyList() :
                 repository.get(userId).values().stream()
                         .sorted(Comparator.comparing(Meal::getDate).thenComparing(Meal::getTime).reversed())
