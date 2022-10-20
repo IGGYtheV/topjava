@@ -7,6 +7,8 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.MealsUtil;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -79,6 +81,11 @@ public class InMemoryMealRepository implements MealRepository {
                         .orElseGet(Stream::empty)
                         .sorted(Comparator.comparing(Meal::getDateTime).reversed())
                         .collect(Collectors.toList());
+    }
+
+    public List<Meal> getAllSorted (int userId,LocalDate startDate, LocalDate endDate,
+                                    LocalTime startTime, LocalTime endTime) {
+        return new ArrayList<>();
     }
 }
 

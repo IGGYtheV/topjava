@@ -19,7 +19,7 @@ import java.util.Objects;
 public class MealServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(MealServlet.class);
     private MealRestController mealRestController;
-    ConfigurableApplicationContext appCtx;
+    private ConfigurableApplicationContext appCtx;
 
     @Override
     public void init() {
@@ -70,7 +70,6 @@ public class MealServlet extends HttpServlet {
                         mealRestController.get(getId(request));
                 request.setAttribute("meal", meal);
                 request.getRequestDispatcher("/mealForm.jsp").forward(request, response);
-
                 break;
             case "all":
             default:
