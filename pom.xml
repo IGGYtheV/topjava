@@ -19,7 +19,7 @@
         <spring.version>5.3.20</spring.version>
 
         <!-- Logging -->
-        <logback.version>1.4.4</logback.version>
+        <logback.version>1.3.4</logback.version>
         <slf4j.version>2.0.3</slf4j.version>
 
         <!--DB-->
@@ -41,11 +41,6 @@
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.3.1</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -92,6 +87,11 @@
             <artifactId>spring-jdbc</artifactId>
             <version>${spring.version}</version>
         </dependency>
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <version>1.3.2</version>
+        </dependency>
 
         <!--DataBase-->
         <dependency>
@@ -114,12 +114,7 @@
             <version>1.2</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api -->
-        <dependency>
-            <groupId>javax.annotation</groupId>
-            <artifactId>javax.annotation-api</artifactId>
-            <version>1.3.2</version>
-        </dependency>
+        <!--Test-->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -138,9 +133,6 @@
             <version>${assertj.version}</version>
             <scope>test</scope>
         </dependency>
-
-
-
     </dependencies>
 
     <profiles>
