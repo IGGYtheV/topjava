@@ -9,21 +9,17 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.MealRepository;
-import ru.javawebinar.topjava.util.Util;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 @Repository
 public class JdbcMealRepository implements MealRepository {
 
     private static final BeanPropertyRowMapper<Meal> ROW_MAPPER = BeanPropertyRowMapper.newInstance(Meal.class);
+
     private final JdbcTemplate jdbcTemplate;
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -51,8 +47,8 @@ public class JdbcMealRepository implements MealRepository {
             Number newKey = insertMeal.executeAndReturnKey(map);
             meal.setId(newKey.intValue());
         } else if (
-                namedParameterJdbcTemplate.update("update meals set datetime =:dateTime," +
-                        "description =:description, calories =:calories where user_id =:userId and id =:id", map) == 0) {
+                namedParameterJdbcTemplate.update("UPDATE meals SET datetime =:dateTime," +
+                        "description =:description, calories =:calories WHERE user_id =:userId AND id =:id", map) == 0) {
             return null;
         }
         return meal;
@@ -60,42 +56,26 @@ public class JdbcMealRepository implements MealRepository {
 
     @Override
     public boolean delete(int id, int userId) {
-        return jdbcTemplate.update("delete from meals where user_id =? and id =?", userId, id) != 0;
+        return jdbcTemplate.update("DELETE FROM meals WHERE user_id =? AND id =?", userId, id) != 0;
     }
 
     @Override
     public Meal get(int id, int userId) {
-        List<Meal> list = jdbcTemplate.query("select * from meals where user_id =? " +
-                "and id = ? ", ROW_MAPPER, userId, id);
+        List<Meal> list = jdbcTemplate.query("SELECT * FROM meals WHERE user_id =? " +
+                "AND id = ? ", ROW_MAPPER, userId, id);
         return DataAccessUtils.singleResult(list);
     }
 
     @Override
     public List<Meal> getAll(int userId) {
-        return filterByPredicate(userId, meal -> true);
-//        List<Meal> list = jdbcTemplate.query("select * from meals where user_id = ? order by datetime", ROW_MAPPER, userId);
-//        Collections.reverse(list);
-//        return list;
+        return jdbcTemplate.query("SELECT * FROM meals WHERE user_id = ? ORDER BY datetime DESC",
+                ROW_MAPPER, userId);
     }
 
     @Override
     public List<Meal> getBetweenHalfOpen(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
-        return filterByPredicate(userId, meal -> Util.isBetweenHalfOpen(meal.getDateTime(), startDateTime, endDateTime));
-    }
-
-    private List<Meal> filterByPredicate(int userId, Predicate<Meal> filter) {
-        List<Meal> list = jdbcTemplate.query("select * from meals where user_id = ?", ROW_MAPPER, userId);
-        return list.stream()
-                .filter(filter)
-                .sorted(Comparator.comparing(Meal::getDateTime).reversed())
-                .collect(Collectors.toList());
-
-
-//        InMemoryBaseRepository<Meal> meals = usersMealsMap.get(userId);
-//        return meals == null ? Collections.emptyList() :
-//                meals.getCollection().stream()
-//                        .filter(filter)
-//                        .sorted(Comparator.comparing(Meal::getDateTime).reversed())
-//                        .collect(Collectors.toList());
+        return jdbcTemplate.query("SELECT * FROM meals WHERE user_id = ? " +
+                        "AND datetime >= ? AND datetime <= ? ORDER BY datetime DESC",
+                ROW_MAPPER, userId, Timestamp.valueOf(startDateTime), Timestamp.valueOf(endDateTime));
     }
 }
