@@ -3,11 +3,13 @@
        xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:component-scan base-package="ru.javawebinar.**.repository.inmemory"/>
+    <bean class="ru.javawebinar.topjava.repository.inmemory.InMemoryUserRepository" id="inmemoryUserRepository"/>
 
-    <context:component-scan base-package="ru.javawebinar.**.service"/>
+    <bean class="ru.javawebinar.topjava.service.UserService">
+        <constructor-arg name="repository" ref="inmemoryUserRepository"/>
+    </bean>
 
-    <context:component-scan base-package="ru.javawebinar.**.web"/>
+    <context:component-scan base-package="ru.javawebinar.**.web.user"/>
 
 
 </beans>
