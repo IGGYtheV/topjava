@@ -20,13 +20,13 @@ public class MealTestData {
     public static final int NOT_EXISTING_MEAL_ID = 33;
 
 
-    public static final Meal USER_MEAL_1 = new Meal(USER_MEAL_1_ID, LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500);
-    public static final Meal USER_MEAL_2 = new Meal(USER_MEAL_2_ID, LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Обед", 1000);
-    public static final Meal ADMIN_MEAL_1 = new Meal(ADMIN_MEAL_1_ID, LocalDateTime.of(2020, Month.JANUARY, 30, 20, 0), "Ужин", 700);
-    public static final Meal USER_MEAL_3 = new Meal(USER_MEAL_3_ID, LocalDateTime.of(2020, Month.JANUARY, 31, 0, 0), "Еда на граничное значение", 510);
-    public static final Meal USER_MEAL_4 = new Meal(USER_MEAL_4_ID, LocalDateTime.of(2020, Month.JANUARY, 31, 10, 0), "Завтрак", 1000);
-    public static final Meal USER_MEAL_5 = new Meal(USER_MEAL_5_ID, LocalDateTime.of(2020, Month.JANUARY, 31, 13, 0), "Обед", 500);
-    public static final Meal ADMIN_MEAL_2 = new Meal(ADMIN_MEAL_2_ID, LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410);
+    public static final Meal userMeal1 = new Meal(USER_MEAL_1_ID, LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500);
+    public static final Meal userMeal2 = new Meal(USER_MEAL_2_ID, LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Обед", 1000);
+    public static final Meal adminMeal1 = new Meal(ADMIN_MEAL_1_ID, LocalDateTime.of(2020, Month.JANUARY, 30, 20, 0), "Ужин", 700);
+    public static final Meal userMeal3 = new Meal(USER_MEAL_3_ID, LocalDateTime.of(2020, Month.JANUARY, 31, 0, 0), "Еда на граничное значение", 510);
+    public static final Meal userMeal4 = new Meal(USER_MEAL_4_ID, LocalDateTime.of(2020, Month.JANUARY, 31, 10, 0), "Завтрак", 1000);
+    public static final Meal userMeal5 = new Meal(USER_MEAL_5_ID, LocalDateTime.of(2020, Month.JANUARY, 31, 13, 0), "Обед", 500);
+    public static final Meal adminMeal2 = new Meal(ADMIN_MEAL_2_ID, LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410);
 
 
     public static Meal getNew() {
@@ -34,7 +34,7 @@ public class MealTestData {
     }
 
     public static Meal getUpdated() {
-        Meal updated = new Meal(USER_MEAL_1);
+        Meal updated = new Meal(userMeal1);
         updated.setDateTime(LocalDateTime.of(2020, Month.FEBRUARY, 28, 11, 1));
         updated.setDescription("UpdateDescription test");
         updated.setCalories(777);
