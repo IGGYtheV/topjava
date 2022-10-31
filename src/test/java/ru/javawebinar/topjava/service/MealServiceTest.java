@@ -3,20 +3,25 @@ package ru.javawebinar.topjava.service;
 import org.junit.AfterClass;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.Stopwatch;
+import org.junit.runner.Description;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.javawebinar.topjava.MyJUnitStopWatch;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
-import java.lang.invoke.MethodHandles;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertThrows;
 import static ru.javawebinar.topjava.MealTestData.*;
@@ -31,17 +36,29 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class MealServiceTest {
 
-    @Rule
-    public MyJUnitStopWatch stopwatch = new MyJUnitStopWatch();
+    private static final Logger log = LoggerFactory.getLogger(MealServiceTest.class);
+
+    private static final List<String> logList = new ArrayList<>();
 
     @Autowired
     private MealService service;
 
+    @Rule
+    public Stopwatch stopwatch = new Stopwatch() {
+        @Override
+        protected void finished(long nanos, Description description) {
+            long millis = TimeUnit.NANOSECONDS.toMillis(nanos);
+            String message = "Test name: " + description.getMethodName() + ". Time spent: " + millis + " milliseconds";
+            logList.add(message);
+            log.info(message);
+        }
+    };
+
     @AfterClass
-    public static void printTotalTime() {
-        System.out.println("All tests for class " + MethodHandles.lookup().lookupClass().getSimpleName()
-                +" took " + MyJUnitStopWatch.totalMicros +" microseconds. Succeeded "
-                + MyJUnitStopWatch.succeeded +" tests out of " + MyJUnitStopWatch.finishedTests);
+    public static void printAllLogs() {
+        for (String m : logList) {
+            log.info(m);
+        }
     }
 
     @Test
