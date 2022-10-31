@@ -1,40 +1,37 @@
 package ru.javawebinar.topjava.model;
 
+import org.hibernate.validator.constraints.Range;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
 @Table(name = "meals", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "date_time"})})
-@NamedQueries(value = {
-        @NamedQuery(name = Meal.DELETE_MEAL, query = "DELETE FROM Meal m WHERE m.id =:id AND m.user.id =:userId"),
-        @NamedQuery(name = Meal.GET_ALL_MEAL, query = "SELECT m FROM Meal m WHERE m.user.id =:userId ORDER BY m.dateTime DESC"),
-        @NamedQuery(name = Meal.GET_BETWEEN_TIME_MEAL, query = "SELECT m FROM Meal m WHERE m.user.id =:userId " +
-                "AND m.dateTime >=:startTime AND m.dateTime <:endTime ORDER BY m.dateTime DESC")
-})
+@NamedQueries(value = {@NamedQuery(name = Meal.DELETE, query = "DELETE FROM Meal m WHERE m.id =:id AND m.user.id =:userId"), @NamedQuery(name = Meal.GET_ALL, query = "SELECT m FROM Meal m WHERE m.user.id =:userId ORDER BY m.dateTime DESC"), @NamedQuery(name = Meal.GET_BETWEEN_TIME, query = "SELECT m FROM Meal m WHERE m.user.id =:userId " + "AND m.dateTime >=:startTime AND m.dateTime <:endTime ORDER BY m.dateTime DESC")})
 public class Meal extends AbstractBaseEntity {
 
-    public static final String DELETE_MEAL = "Meal.delete";
-    public static final String GET_ALL_MEAL = "Meal.getAll";
-    public static final String GET_BETWEEN_TIME_MEAL = "Meal.getBetweenHalfOpen";
+    public static final String DELETE = "Meal.delete";
+    public static final String GET_ALL = "Meal.getAll";
+    public static final String GET_BETWEEN_TIME = "Meal.getBetweenHalfOpen";
 
-    @Column(name = "date_time")
+    @Column(name = "date_time", nullable = false)
     @NotNull
     private LocalDateTime dateTime;
-
     @Column(name = "description", nullable = false)
     @NotBlank
+    @Size(min = 2, max = 120)
     private String description;
-
     @Column(name = "calories", nullable = false)
-    @NotNull
+    @Range(min = 10, max = 5000)
     private int calories;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id",  updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", updatable = false, nullable = false)
+    @NotNull
     private User user;
 
     public Meal() {
@@ -93,11 +90,6 @@ public class Meal extends AbstractBaseEntity {
 
     @Override
     public String toString() {
-        return "Meal{" +
-                "id=" + id +
-                ", dateTime=" + dateTime +
-                ", description='" + description + '\'' +
-                ", calories=" + calories +
-                '}';
+        return "Meal{" + "id=" + id + ", dateTime=" + dateTime + ", description='" + description + '\'' + ", calories=" + calories + '}';
     }
 }
