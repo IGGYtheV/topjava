@@ -11,7 +11,6 @@ import java.time.LocalTime;
 @Table(name = "meals", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "date_time"})})
 @NamedQueries(value = {
         @NamedQuery(name = Meal.DELETE_MEAL, query = "DELETE FROM Meal m WHERE m.id =:id AND m.user.id =:userId"),
-        @NamedQuery(name = Meal.GET_MEAL, query = "SELECT m FROM Meal m WHERE m.id =:id AND m.user.id =:userId"),
         @NamedQuery(name = Meal.GET_ALL_MEAL, query = "SELECT m FROM Meal m WHERE m.user.id =:userId ORDER BY m.dateTime DESC"),
         @NamedQuery(name = Meal.GET_BETWEEN_TIME_MEAL, query = "SELECT m FROM Meal m WHERE m.user.id =:userId " +
                 "AND m.dateTime >=:startTime AND m.dateTime <:endTime ORDER BY m.dateTime DESC")
@@ -19,7 +18,6 @@ import java.time.LocalTime;
 public class Meal extends AbstractBaseEntity {
 
     public static final String DELETE_MEAL = "Meal.delete";
-    public static final String GET_MEAL = "Meal.get";
     public static final String GET_ALL_MEAL = "Meal.getAll";
     public static final String GET_BETWEEN_TIME_MEAL = "Meal.getBetweenHalfOpen";
 
@@ -36,7 +34,7 @@ public class Meal extends AbstractBaseEntity {
     private int calories;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id",  updatable = false)
     private User user;
 
     public Meal() {
