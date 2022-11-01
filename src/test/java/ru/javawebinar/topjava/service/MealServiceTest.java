@@ -19,8 +19,6 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertThrows;
@@ -38,27 +36,26 @@ public class MealServiceTest {
 
     private static final Logger log = LoggerFactory.getLogger(MealServiceTest.class);
 
-    private static final List<String> logList = new ArrayList<>();
-
-    @Autowired
-    private MealService service;
+    private static final StringBuilder logList = new StringBuilder("\nTests time summary:\n");
 
     @Rule
     public Stopwatch stopwatch = new Stopwatch() {
         @Override
         protected void finished(long nanos, Description description) {
             long millis = TimeUnit.NANOSECONDS.toMillis(nanos);
-            String message = "Test name: " + description.getMethodName() + ". Time spent: " + millis + " milliseconds";
-            logList.add(message);
+            String message = String.format("Test name: %-25s %10s %d ms %n",
+                    description.getMethodName(), "Time spent:", millis);
+            logList.append(message);
             log.info(message);
         }
     };
 
+    @Autowired
+    private MealService service;
+
     @AfterClass
     public static void printAllLogs() {
-        for (String m : logList) {
-            log.info(m);
-        }
+        log.info(logList.toString());
     }
 
     @Test
