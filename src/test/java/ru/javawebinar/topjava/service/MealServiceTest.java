@@ -43,8 +43,8 @@ public class MealServiceTest {
         @Override
         protected void finished(long nanos, Description description) {
             long millis = TimeUnit.NANOSECONDS.toMillis(nanos);
-            String message = String.format("Test name: %-25s %10s %d ms %n",
-                    description.getMethodName(), "Time spent:", millis);
+            String message = String.format("%-24s %3s %d ms %n",
+                    description.getMethodName(), ":", millis);
             logList.append(message);
             log.info(message);
         }
