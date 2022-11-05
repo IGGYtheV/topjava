@@ -14,12 +14,16 @@ public class Profiles {
             POSTGRES_DB = "postgres",
             HSQL_DB = "hsqldb";
 
-    //  Get DB profile depending of DB driver in classpath
-    public static String getActiveDbProfile() {
+    //  Get DB profile depending on DB driver in classpath
+    public static String[] getActiveDbProfiles() {
+        String[] profiles = new String[2];
+        profiles[0] = REPOSITORY_IMPLEMENTATION;
         if (ClassUtils.isPresent("org.postgresql.Driver", null)) {
-            return POSTGRES_DB;
+            profiles[1] = POSTGRES_DB;
+            return profiles;
         } else if (ClassUtils.isPresent("org.hsqldb.jdbcDriver", null)) {
-            return HSQL_DB;
+            profiles[1] = HSQL_DB;
+            return profiles;
         } else {
             throw new IllegalStateException("Could not find DB driver");
         }
