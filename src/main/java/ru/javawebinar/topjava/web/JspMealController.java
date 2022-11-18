@@ -30,7 +30,7 @@ public class JspMealController {
     }
 
     @GetMapping("delete&id={id}")
-    public String deleteMeal(@PathVariable int id) {
+    public String delete(@PathVariable int id) {
         int userId = SecurityUtil.authUserId();
         service.delete(id, userId);
         return "redirect:/meals";
@@ -48,17 +48,20 @@ public class JspMealController {
     public String createMapper(Model model) {
         Meal meal = new Meal();
         model.addAttribute("meal", meal);
+        model.addAttribute("create", "create");
         return "mealForm";
     }
 
     @PostMapping("/meals")
-    public String doUpdateCreate(HttpServletRequest request) throws UnsupportedEncodingException {
+    public String save(HttpServletRequest request) throws UnsupportedEncodingException {
         int userId = SecurityUtil.authUserId();
         request.setCharacterEncoding("UTF-8");
         Meal meal = new Meal(
                 LocalDateTime.parse(request.getParameter("dateTime")),
                 request.getParameter("description"),
                 Integer.parseInt(request.getParameter("calories")));
+
+
         if (StringUtils.hasLength(request.getParameter("id"))) {
             meal.setId(Integer.parseInt(request.getParameter("id")));
         } else  meal.setId(null);
@@ -78,8 +81,8 @@ public class JspMealController {
         return "meals";
     }
 
-    @GetMapping("/getAllWithinTime")
-    public String getAllWithinTime(HttpServletRequest request, Model model) {
+    @GetMapping("/getBetween")
+    public String getBetween(HttpServletRequest request, Model model) {
         int userId = SecurityUtil.authUserId();
         LocalDate startDate = parseLocalDate(request.getParameter("startDate"));
         LocalDate endDate = parseLocalDate(request.getParameter("endDate"));
