@@ -33,7 +33,7 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
     @Autowired
     private Environment environment;
 
-    @Autowired(required=false)
+    @Autowired(required = false)
     protected JpaUtil jpaUtil;
 
     @Before
