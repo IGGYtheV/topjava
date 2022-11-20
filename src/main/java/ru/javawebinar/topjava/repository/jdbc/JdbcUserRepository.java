@@ -16,6 +16,7 @@ import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
 
+import javax.validation.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -35,6 +36,8 @@ public class JdbcUserRepository implements UserRepository {
 
     private final ResultSetExtractor<Collection<User>> rs;
 
+    private final Validator validator;
+
 
     @Autowired
     public JdbcUserRepository(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
@@ -45,11 +48,17 @@ public class JdbcUserRepository implements UserRepository {
         this.jdbcTemplate = jdbcTemplate;
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
         this.rs = new UserExtractor();
+        this.validator = Validation.buildDefaultValidatorFactory().getValidator();
     }
 
     @Override
     @Transactional
-    public User save(User user) {
+    public User save(@Valid User user) {
+        Set<ConstraintViolation<User>> violations = validator.validate(user);
+        if (violations.size() > 0) {
+            throw new ConstraintViolationException(violations);
+        }
+
         var parameterSource = new BeanPropertySqlParameterSource(user);
         Role[] roles = user.getRoles().toArray(new Role[0]);
 
