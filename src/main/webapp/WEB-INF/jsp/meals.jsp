@@ -6,7 +6,6 @@
 <html>
 <jsp:include page="fragments/headTag.jsp"/>
 <head>
-    <link rel="stylesheet" href="resources/css/style.css">
     <title>Meals</title>
 </head>
 <body>
@@ -14,7 +13,8 @@
 <section>
     <hr/>
     <h2><spring:message code="meal.title"/></h2>
-    <form method="get" action="getBetween">
+
+    <form method="get" action="<spring:url value="/meals/between"/>">
         <input type="hidden" name="action" value="filter">
         <dl>
             <dt><spring:message code="meal.from-date"/></dt>
@@ -35,7 +35,9 @@
         <button type="submit"><spring:message code="meal.filter"/></button>
     </form>
     <hr/>
-    <a href="create"><spring:message code="meal.add"/></a>
+
+
+    <a href="<spring:url value="/meals/create"/>"><spring:message code="meal.add"/></a>
     <br><br>
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
@@ -58,11 +60,14 @@
                 </td>
                 <td>${meal.description}</td>
                 <td>${meal.calories}</td>
-                <spring:url var="updateLink" value="showMealForm">
+                <spring:url var="updateLink" value="/meals/showMealForm">
+                    <spring:param name="mealId" value="${meal.id}"/>
+                </spring:url>
+                <spring:url var="deleteLink" value="/meals/delete">
                     <spring:param name="mealId" value="${meal.id}"/>
                 </spring:url>
                 <td><a href="${updateLink}"><spring:message code="common.update"/></a></td>
-                <td><a href="delete&id=${meal.id}"><spring:message code="common.delete"/></a></td>
+                <td><a href="${deleteLink}"><spring:message code="common.delete"/></a></td>
             </tr>
         </c:forEach>
     </table>

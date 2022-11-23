@@ -4,28 +4,22 @@
 
 <html>
 <jsp:include page="fragments/headTag.jsp"/>
+
 <head>
     <title>Meal</title>
-    <link rel="stylesheet" href="resources/css/style.css">
 </head>
+
 <body>
 <jsp:include page="fragments/bodyHeader.jsp"/>
+
 <section>
     <hr>
     <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.Meal" scope="request"/>
     <h2>
-        <c:choose>
-            <c:when test="${meal.id == null}">
-                <spring:message code="meal.add"/>
-                <br/>
-            </c:when>
-            <c:otherwise>
-                <spring:message code="meal.edit"/>
-                <br/>
-            </c:otherwise>
-        </c:choose>
+    <spring:message code="${meal.id == null ? 'meal.add' : 'meal.edit'}" />
     </h2>
-    <form method="post" action="meals">
+
+    <form method="post" action="<spring:url value="/meals"/>">
         <input type="hidden" name="id" value="${meal.id}">
         <dl>
             <dt><spring:message code="meal.date"/></dt>

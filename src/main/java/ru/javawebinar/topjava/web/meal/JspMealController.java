@@ -4,7 +4,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.javawebinar.topjava.model.Meal;
@@ -26,20 +25,20 @@ public class JspMealController extends AbstractMealController {
         super(service);
     }
 
-    @GetMapping("delete&id={id}")
-    public String doDelete(@PathVariable int id) {
+    @GetMapping("meals/delete")
+    public String doDelete(@RequestParam("mealId") int id) {
         super.delete(id);
         return "redirect:/meals";
     }
 
-    @GetMapping("/showMealForm")
+    @GetMapping("meals/showMealForm")
     public String updateForm(@RequestParam("mealId") int id, Model model) {
         Meal meal = super.get(id);
         model.addAttribute(meal);
         return "mealForm";
     }
 
-    @GetMapping("/create")
+    @GetMapping("meals/create")
     public String createForm(Model model) {
         Meal meal = new Meal();
         model.addAttribute("meal", meal);
@@ -49,7 +48,6 @@ public class JspMealController extends AbstractMealController {
 
     @PostMapping("/meals")
     public String save(HttpServletRequest request) throws UnsupportedEncodingException {
-        request.setCharacterEncoding("UTF-8");
         Meal meal = new Meal(
                 LocalDateTime.parse(request.getParameter("dateTime")),
                 request.getParameter("description"),
@@ -75,7 +73,7 @@ public class JspMealController extends AbstractMealController {
         return "meals";
     }
 
-    @GetMapping("/getBetween")
+    @GetMapping("/meals/between")
     public String doGetBetween(HttpServletRequest request, Model model) {
         LocalDate startDate = parseLocalDate(request.getParameter("startDate"));
         LocalDate endDate = parseLocalDate(request.getParameter("endDate"));
