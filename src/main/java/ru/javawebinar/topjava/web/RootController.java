@@ -32,10 +32,9 @@ public class RootController {
         return "login";
     }
 
-//    @GetMapping("/meals")
-//    public String getMeals() {
-//        log.info("meals");
-//        return "meals";
-//    }
+    @GetMapping("/meals")
+    public String getMeals() {
+        log.info("meals");
+        return "meals";
+    }
 }
-
